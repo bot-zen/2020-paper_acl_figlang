@@ -25,7 +25,8 @@
 
 %%% by estemle
 \usepackage[utf8x]{inputenc}
-\usepackage[autostyle=none]{csquotes}
+\usepackage[english]{babel}
+\usepackage[autostyle=tryonce]{csquotes}
 \usepackage{tabularx}
 \usepackage{graphicx}
 \usepackage{multirow}
@@ -34,7 +35,7 @@
 \newcolumntype{H}{>{\setbox0=\hbox\bgroup}c<{\egroup}@{}}
 
 
-%\aclfinalcopy % Uncomment this line for the final submission
+\aclfinalcopy % Uncomment this line for the final submission
 %\def\aclpaperid{***} %  Enter the acl Paper ID here
 
 %\setlength\titlebox{5cm}
@@ -45,7 +46,7 @@
 
 \newcommand\BibTeX{B\textsc{ib}\TeX}
 
-\title{Testing the role of metadata in a neural network architecture of metaphor identification}
+\title{Testing the role of metadata in metaphor identification}
 
 \author{Egon W.~Stemle \\
   Eurac Research / Bolzano-Bozen (IT) \\
@@ -57,34 +58,116 @@
 
 \date{}
 
+% ============================================================================
+% REVIEWER #1
+% ============================================================================
+%
+% ---------------------------------------------------------------------------
+% Reviewer's Scores
+% ---------------------------------------------------------------------------
+%                    Appropriateness (1-5): 5
+%                            Clarity (1-5): 4
+%       Originality / Innovativeness (1-5): 3
+%            Soundness / Correctness (1-5): 3
+%              Meaningful Comparison (1-5): 1
+%                       Thoroughness (1-5): 2
+%         Impact of Ideas or Results (1-5): 3
+%                     Recommendation (1-5): 2
+%                Reviewer Confidence (1-5): 4
+%
+% Detailed Comments
+% ---------------------------------------------------------------------------
+% 1. The main contribution of this paper is to demonstrate the difference between the two datasets through training by merging the two datasets and to explore the influence of metadata on the effect of metaphor detection. However, in general, the contribution is insufficient, because the difference between the two datasets is not an important discovery, and metadata does not seem to improve the effect of metaphor detection very well.
+% Reply: We have made the objective of our study clearer in the introduction.
+% 2. The metadata discussed in this paper is limited to external features such as proficiency, native language type, text ID, and so on, which seem to have little relevance to metaphor. It is more valuable to explore the deep linguistic features such as lexical, syntactic, and semantic features related to metaphor.
+% Reply: The clarification of the study’s aims now provides an answer to the question of why it makes sense to explore the relevance of the metadata - based on findings in previous research. 
+% [introduction / conclusion: express more clearly what the paper does and what not]
+% 3. It is better to define alphabetic symbols in the paper, such as L1, M, SD, F, so that readers who do not participate in the sharing task can understand.
+% Reply: the abbreviation L1 has been defined. The other abbreviations that the reviewer mentions are standard notations for reporting statistical results and, as such, it is not necessary and would actually be highly unusual to spell them out.
+% 4. The introduction of related research work in this paper is not enough, there are some latest related papers.
+% Reply: Four relevant papers have been added in the introduction.
+% 5. The format of Table 3 is not standard and the sixth reference is in the wrong format.
+% Reply: fixed
+% 6. Other mistakes: line 120: in the use (of), line 403: In a first experiment
+% Reply: fixed
+%
+% ---------------------------------------------------------------------------
+
+% ============================================================================
+%                             REVIEWER #2
+% ============================================================================
+%
+% ---------------------------------------------------------------------------
+% Reviewer's Scores
+% ---------------------------------------------------------------------------
+%                   Appropriateness (1-5): 5
+%                           Clarity (1-5): 3
+%       Originality / Innovativeness (1-5): 3
+%           Soundness / Correctness (1-5): 3
+%              Meaningful Comparison (1-5): 2
+%                       Thoroughness (1-5): 4
+%         Impact of Ideas or Results (1-5): 3
+%                     Recommendation (1-5): 3
+%               Reviewer Confidence (1-5): 3
+%
+% Detailed Comments
+% ---------------------------------------------------------------------------
+% This paper studies the word-level metaphor detection with a focus on the structure of training data. It extends the metaphor detection system from (Stemle and Onysko, 2018). It is built upon a bi-directional recursive neural network with long-short term memory, using fastText word embeddings and metadata information.
+% Some interesting empirical finds are made in this work: 
+% (1) When the model is trained on the combination of VUA and TOEFL data, the shuffling of data achieves performance gains.
+% (2) The metadata information does not improve the metaphor detection performance.
+%
+% 1. Formatting
+% (1) Can authors put the header horizontally in Table 1 for better readability?
+%Reply: we believe this would waste a lot of space (table would have to span two columns), and that the readability is ok-ish
+% (2) Missing right table boundaries in Table 3.
+%Reply: fixed
+% (3) F1 scores are missing in Table 4, which are better included for an easy comparison between different metadata types.
+%Reply: fixed
+%
+% 2. Model. It is a novel idea to incorporate metadata information into the model training based on the interesting observations described in Section 2. But it needs more details about how the metadata information is used. 
+%Reply: added description in the Design and implementation section 
+%
+% 2. Experiment results. What results are reported in Table 3 and 4? Are these test results for VUA, TOEFL or both? Also Table 3 includes results on verbs, are results in Table 4 on verbs or all POS tags? For the completeness of empirical results, it would be better to report all results on all POS and verbs respectively as well as on VUA and TOEFL data respectively.
+%Reply: Table 3 now reports results for VUA and TOEFL; Table 4 reports data on TOEFL (because we only have metadata for TOEFL) and this has been made explicit in the caption
+% 2. Related works. Although some studies on metaphor detection are mentioned in Introduction, some more related works are worth mentioning to provide the readers with necessary background information.
+%Reply: Four more relevant papers have been added in the introduction.
+%
+% [Egon: network systems/ Alex: more references from overview paper]
+% ---------------------------------------------------------------------------
+
+
 \begin{document}
 \maketitle
 \begin{abstract}
-This paper describes the application of a neural network for the automatic detection of metaphors. The system participated in the shared task of metaphor identification that is part of the Second Workshop of Figurative Language Processing held at ACL 2020. The particular focus of our approach is on the potential influence that the metadata given in the ETS Corpus of Non-Native Written English might have on the automatic detection of metaphors in this dataset. The article first discusses the annotated ETS learner data, highlighting some of its peculiarities and inherent biases of metaphor use. This is followed by a series of evaluations performed by an LSTM BiRNN classification architecture in order to test whether specific metadata have an influence on the system performance in this task of automated metaphor identification. 
+This paper describes the adaptation and application of a neural network system for the automatic detection of metaphors. The  LSTM BiRNN system participated in the shared task of metaphor identification that was part of the Second Workshop of Figurative Language Processing (FigLang2020) held at the Annual Conference of the Association for Computational Linguistics (ACL2020). The particular focus of our approach is on the potential influence that the metadata given in the ETS Corpus of Non-Native Written English might have on the automatic detection of metaphors in this dataset. The article first discusses the annotated ETS learner data, highlighting some of its peculiarities and inherent biases of metaphor use. A series of evaluations follow in order to test whether specific metadata influence the system performance in the task of automatic metaphor identification. The system is available under the APLv2 open-source license. 
 \end{abstract}
 
 
 
 \section{Introduction}
 
-Research on metaphors, particularly in the framework of conceptual metaphor theory, continues to grow in all genres of language use and across diverse disciplines of linguistics (cf., among others, \citet{littlemore:2019:MetaphorsMindSources}; \citet{gibbsjr:2017:MetaphorWarsConceptual}; \citet{charteris-black:2016:FireMetaphorsDiscourses}; \citet{kovecses:2020:ExtendedConceptualMetaphor}; \citet{callies-degani::MetaphorLanguageCulture} for recent and forthcoming overviews and extensions, and \citet{veale-EtAl:2016:MetaphorComputationalPerspective} for a book-length discussion of computational linguistic perspectives). While the importance of metaphor in thought and everyday language use has long been acknowledged \citep{LakoffJohnson80}, the practice of metaphor research still faces two methodological and analytical challenges: first of all, the identification of metaphors and, secondly, their actual description through source and target domains. 
+Research on metaphors, particularly in the framework of conceptual metaphor theory, continues to grow in all genres of language use and across diverse disciplines of linguistics (cf., among others, \citealp{littlemore:2019:MetaphorsMindSources}; \citealp{gibbsjr:2017:MetaphorWarsConceptual}; \citealp{charteris-black:2016:FireMetaphorsDiscourses}; \citealp{kovecses:2020:ExtendedConceptualMetaphor}; \citealp{callies-degani::MetaphorLanguageCulture} for recent and forthcoming overviews and extensions, and \citealp{veale-EtAl:2016:MetaphorComputationalPerspective} for a book-length discussion of computational linguistic perspectives). While the importance of metaphor in thought and everyday language use has long been acknowledged \citep{LakoffJohnson80}, the practice of metaphor research still faces two methodological and analytical challenges: first of all, the identification of metaphors and, secondly, their actual description through source and target domains. 
 
-In computational linguistics, a great amount of recent work has been concerned with addressing the challenge of identifying metaphors in texts. This is evident in the series of four Workshops on Metaphor in NLP from 2013 to 2016 and in the two Workshops on Figurative Language Processing in 2018 and 2020, each of which involved a shared task in automatic metaphor detection. Identification systems that achieved the best results in the first shared task relied on neural networks incorporating LSTM architectures (see \citealp{mu-EtAl:2019} for a discussion). 
-This paper extends a system proposed in \citet{stemle-onysko:2018:naacl-flpst}, which uses word-embeddings combining corpora like the BNC with the TOEFL11 language learner corpus (see \citealp{Blanchard-EtAl:TOEFL11}). With this system, we participate in the \emph{The Second Shared Task (ST) on Metaphor Detection}. The difference to the 2018 edition of the ST is a new set of data. As in the first task, one part of the dataset is based on the VU Amsterdam (VUA) Metaphor Corpus manually annotated according to the MIPVU procedure \citep{Steen2010}. Additionally, the second task includes a sample of 240 argumentative learner texts. These texts are taken from the ETS Corpus of Non-Native Written English (synonymous to the TOEFL11 corpus) and manually annotated \citep{beigmanklebanov-EtAl:2018}. 
+In computational linguistics, a great amount of recent work has been concerned with addressing the challenge of identifying metaphors in texts. This is evident in the series of four Workshops on Metaphor in NLP from 2013 to 2016 and in the two Workshops on Figurative Language Processing in 2018 \citep{ws-2018} and 2020 \citep{leong2020}, each of which involved a shared task (ST) in automatic metaphor detection. Identification systems that achieved the best results in the first shared task relied on neural networks incorporating long-term short-term memory (LSTM) architectures (see \citealp{mu-EtAl:2019} for a discussion). Further advances in the field using deep learning approaches have been reported in \citet{dankers-etal-2019-modelling}, \citet{gao-etal-2018-neural-metaphor}, and \citet{rei-etal-2017}.
 
-Since the learner essays are a very specific kind of data, the aim of this study is to build upon observations from \citet{stemle-onysko:2018:naacl-flpst} and further investigate factors in the data that can influence the results of neural network based metaphor identification that uses word-embeddings derived from the larger set of the same data type (the TOEFL11 corpus). For that, a particular focus in the training and testing is put on the metadata, specifically on proficiency, prompt and L1. 
+This paper extends a system proposed in \citet{stemle-onysko:2018:naacl-flpst}, which combines word embeddings (WEs) of corpora like the BNC \citep{BNC:2007} and the TOEFL11 language learner corpus (see \citealp{Blanchard-EtAl:TOEFL11}). With the modified system, we participated in \emph{The Second Shared Task on Metaphor Detection}. The difference to the 2018 edition of the ST is a new set of data. As in the first task, one part of the dataset is based on the VU Amsterdam (VUA) Metaphor Corpus manually annotated according to the MIPVU procedure \citep{Steen2010}. Additionally, the second task includes a sample of 240 argumentative learner texts. These texts are taken from the ETS Corpus of Non-Native Written English (synonymous to the TOEFL11 corpus) and have been manually annotated \citep{beigmanklebanov-EtAl:2018}. 
 
-To address these aims, our paper is structured as follows: Section 2 provides some observations on the annotated learner corpus dataset. Section 3 describes the system of metaphor identification. This is followed in Section 4 by the results of the experiments, which are briefly discussed in light of the observations on the annotated learner corpus data. 
+Since the learner essays are a very specific kind of data, the aim of this study is to build upon observations from \citet{stemle-onysko:2018:naacl-flpst}, who found that a combination of word embeddings from the BNC and the TOEFL11 learner corpus yielded the best results of metaphor identification in a bi-directional recursive neural network (BiRNN) with LSTM. These results triggered the hypothesis that learner language can lead to an information gain for neural network based metaphor identification. To explore this hypothesis further, the current study puts an explicit focus on the metadata provided for the ETS Corpus of Non-Native Written English and specifically tests the potential influence of proficiency ratings, essay prompt, and the first language (L1) of the author. In addition, we also test whether a combined training on the diverse datasets and the sequence of this training will have an impact on our system of neural network based metaphor identification. 
+
+To address these aims, our paper is structured as follows: Section 2 provides observations on the annotated learner corpus dataset. Section 3 describes the system of metaphor identification. This is followed in Section 4 by the results of the experiments, which are briefly discussed in light of the observations on the annotated learner corpus data. 
+
 
 \section{Observations on the data}
 
-The VUA Metaphor Corpus and its application in the first shared task has been concisely described in \citet{leong-EtAl:2018:PFLP}. The authors have reported the relatively high inter-annotator agreement ($\kappa>0.8$), which is in part due to the MIPVU protocol \citep{Steen2010} and the close training of annotators in the Amsterdam Metaphor Group. Interestingly, the results of the first task across all submitted systems showed a clear genre bias with academic texts consistently displaying the highest correct identification rates and conversation data (i.e.~spoken texts) the lowest \citet[p.60]{leong-EtAl:2018:PFLP}. This might be related to the fact that academic discourse is more schematic and formulaic (e.g.~in the use sentential adverbials and verbal constructions) and might rely to a greater extent on recurrent metaphorical expressions than spoken conversations, which are less schematic and can thus display a higher degree of syntactic and lexical variation. In other words, similarities in the data between training and test sets might be higher in the academic than in the conversation genre, leading to different genre-specific training effects in neural networks.  
+The VUA Metaphor Corpus and its application in the first shared task has been concisely described in \citet{leong-EtAl:2018:PFLP}. The authors have reported the relatively high inter-annotator agreement ($\kappa>0.8$), which is in part due to the MIPVU protocol \citep{Steen2010} and the close training of annotators in the Amsterdam Metaphor Group. Interestingly, the results of the first task across all submitted systems showed a clear genre bias with academic texts consistently displaying the highest correct identification rates and conversation data (i.e.~spoken texts) the lowest \citet[p.60]{leong-EtAl:2018:PFLP}. This might be related to the fact that academic discourse is more schematic and formulaic (e.g.~in the use of sentential adverbials and verbal constructions) and might rely to a greater extent on recurrent metaphorical expressions than spoken conversations, which are less schematic and can thus display a higher degree of syntactic and lexical variation. In other words, similarities in the data between training and test sets might be higher in the academic than in the conversation genre, leading to different genre-specific training effects in neural networks.  
 
-Apart from the VUA metaphor corpus, the second shared task introduces a novel dataset culled from the ETS Corpus of Non-Native Written English. In their description, \citet{beigmanklebanov-EtAl:2018} report an average inter-annotator agreement of $\kappa=0.62$ on marking argumentation-relevant metaphors. Disagreement in the annotations was positively compensated in that all metaphor annotations were included even if only given by one of the two raters. While a focus on argumentation-relevant metaphors coheres with the genre of short argumentative learner essays written in response to one of eight prompts during TOEFL examinations in 2006-2007 \citep{ETS2:ETS202331}, the scope of metaphor annotation is more restricted in the ETS sample than in the VUA corpus, which follows the more stringent MIPVU protocol. This explains to some extent why the overall amount of metaphor-related words in the training sets is considerably lower in the ETS sample (an average of 7\% in All-POS and 14\% among verbs; see \citealp[p.88]{beigmanklebanov-EtAl:2018}) than in the VUA Metaphor Corpus (15\% in All-POS and 28.3\% among verbs; see Leong et al., 2018: 58). 
+Apart from the VUA metaphor corpus, the second shared task introduces a novel dataset culled from the ETS Corpus of Non-Native Written English. In their description, \citet{beigmanklebanov-EtAl:2018} report an average inter-annotator agreement of $\kappa=0.62$ on marking argumentation-relevant metaphors. Disagreement in the annotations was positively compensated in that all metaphor annotations were included even if only given by one of the two raters. While a focus on argumentation-relevant metaphors coheres with the genre of short argumentative learner essays written in response to one of eight prompts during TOEFL examinations in 2006-2007 \citep{Blanchard-EtAl:TOEFL11}, the scope of metaphor annotation is more restricted in the ETS sample than in the VUA corpus, which follows the more stringent MIPVU protocol. This explains to some extent why the overall amount of metaphor-related words in the training sets is considerably lower in the ETS sample (an average of 7\% in All-POS and 14\% among verbs; see \citealp[p.88]{beigmanklebanov-EtAl:2018}) than in the VUA Metaphor Corpus (15\% in All-POS and 28.3\% among verbs; see \citealp[p.58]{leong-EtAl:2018:PFLP}). 
 
-The relatively small size of the ETS sample inspired us to look into the structure of the data more closely to check whether any potential biases exist that might play a role for the automatic detection of metaphors. \citet[p.89]{beigmanklebanov-EtAl:2018} report a significant positive correlation of the number of metaphors and the proficiency ratings of the texts as medium or high in the data. This relationship is confirmed by an independent samples t-test in the training partition of the data (180 texts). The group of highly proficient learners ($N=95$) uses more metaphors ($M=13.98, SD=8.23$) compared to the group of medium proficient learners ($N=85, M=9.55, SD=5.96$) at a significantly higher rate ($t=4.07, p=0.000071$). The L1 background of the learners (i.e. Arabic, Italian, Japanese) did not influence the mean number of metaphors in the texts as confirmed by a one-way ANOVA ($F=1.619, p=0.201$; L1 Arabic: $N=63, M=12.48, SD=8.37$; L1 Italian: $N=59, M=12.71, SD=7.79$; L1 Japanese: $N=59, M=10.44, SD=6.38$). 
+The relatively small size of the ETS sample inspired us to look into the structure of the data more closely to check whether any potential biases exist that might play a role for the automatic detection of metaphors. \citet[p.89]{beigmanklebanov-EtAl:2018} report a significant positive correlation of the number of metaphors and the proficiency ratings of the texts as medium or high in the data. This relationship is confirmed by an independent samples t-test in the training partition of the data (180 texts). The group of highly proficient learners ($N=95$) uses more metaphors ($M=13.98, SD=8.23$) compared to the group of medium proficient learners ($N=85, M=9.55, SD=5.96$) at a significantly higher rate ($t=4.07, p=0.000071$). The L1 background of the learners (i.e.~Arabic, Italian, Japanese) did not influence the mean number of metaphors in the texts as confirmed by a one-way ANOVA ($F=1.619, p=0.201$; L1 Arabic: $N=63, M=12.48, SD=8.37$; L1 Italian: $N=59, M=12.71, SD=7.79$; L1 Japanese: $N=59, M=10.44, SD=6.38$). 
 
-\begin{table}[t]
+
+\begin{table}[htb!]
 \begin{center}
 %\small
 \begin{tabular}{|l|c|c|c|c|c|H c|}
@@ -125,18 +208,17 @@ The relatively small size of the ETS sample inspired us to look into the structu
 \hline
 \end{tabular}
 \end{center}
-\caption{\label{tab:num_metaphors}Number of metaphors (types and tokens) per prompt in the annotated ETS training set} 
+\caption{\label{tab:num_metaphors}Number of metaphors (types and tokens) per prompt in the annotated ETS training set.} 
 \end{table}
 
 Since the Corpus of Non-Native Written English consists of argumentative learner essays that were written in response to one of eight different prompts, another factor to consider in the annotated ETS sample is the role the prompt might have on metaphor use. Table \ref{tab:num_metaphors} summarizes the descriptive statistics on the number of metaphors per prompt.  
 
-
-From left to right, the columns in Table \ref{tab:num_metaphors} report, per prompt, the total number of words, the number of metaphor types, the overall number of metaphor tokens (i.e. all words annotated for metaphor), the type token ratio of metaphors, the relative amount of metaphor tokens among all words, and the mean values of metaphors. The two rightmost columns illustrate an uneven occurrence of metaphors across the diverse prompts. Three groups emerge from the data according to their similarly high (or low) values: P1, P2, P3 as the highest scoring group, P4, P5, P6 as the lowest scoring group, and P7, P8 whose values are in-between the other two groups. A one-way ANOVA for independent samples ($F=7.0919, p=.00001$) confirms a significant difference between the groups. T-tests comparing the minimal and maximal numerical distances between the high, the medium, and the low clusters show that the high cluster is significantly different from the low cluster (P1: $N=23, M=15.70, SD=8.138$ compared to P5: $N=23, M=8.96, SD=4.117$) at $t(44)=3.54, p=.000948$. The differences between the low and the medium groups as well as the high and the medium group do not reach a significance threshold of $p<.01$.  
+From left to right, the columns in Table \ref{tab:num_metaphors} report, per prompt, the total number of words, the number of metaphor types, the overall number of metaphor tokens (i.e.~all words annotated for metaphor), the type token ratio of metaphors, the relative amount of metaphor tokens among all words, and the mean values of metaphors. The two rightmost columns illustrate an uneven occurrence of metaphors across the diverse prompts. Three groups emerge from the data according to their similarly high (or low) values: P1, P2, P3 as the highest scoring group, P4, P5, P6 as the lowest scoring group, and P7, P8 whose values are in-between the other two groups. A one-way ANOVA for independent samples ($F=7.0919, p=.00001$) confirms a significant difference between the groups. T-tests comparing the minimal and maximal numerical distances between the high, the medium, and the low clusters show that the high cluster is significantly different from the low cluster (P1: $N=23, M=15.70, SD=8.138$ compared to P5: $N=23, M=8.96, SD=4.117$) at $t(44)=3.54, p=.000948$. The differences between the low and the medium groups as well as the high and the medium group do not reach a significance threshold of $p<.01$.  
 
 When looking for an explanation of these biased metaphor occurrences, some interesting patterns emerge among the high frequency group (P1, P2, and P3). In all these instances, the prompts trigger certain metaphor-related words (MRW) that occur at a high rate. Table 2 provides an overview of the metaphorical expressions triggered by the prompts P1, P2, and P3. The 30 most frequent MRW were closely analyzed for each of the prompts. 
 
 
-\begin{table*}[t]
+\begin{table*}[tb!]
 \setlength{\tabcolsep}{3pt}
 \begin{center}
 %\small
@@ -298,96 +380,147 @@ dedicate/-s \newline
 \hline
 \end{tabularx}
 \end{center}
-\caption{\label{tab:frequent_metaphors}Most frequent metaphorical expressions in P1, P2, and P3 \\ 
+\caption{\label{tab:frequent_metaphors}Most frequent metaphorical expressions in P1, P2, and P3. \\ 
 (*) MRW does not occur verbatim in the prompt }
 \end{table*}
 
 
 In Table \ref{tab:frequent_metaphors}, MRW that cannot be related to the prompt are preceded by an asterisk. All the other terms are triggered by the prompts. For P1, the expression \enquote{broad knowledge} from the prompt that instantiates an objectification metaphor of knowledge (\textsc{knowledge is an object}) is frequently reiterated in the test takers’ essays and is by far the most frequent metaphorical expression among all annotated MRW in P1. The metaphorical uses of the lexeme \emph{focus} as in \enquote{focus on a particular subject/field} is triggered by the prompt as a synonymous phrase for \enquote{\ldots specialize in one specific subject}. Similarly, the term \emph{wide/-er} is used by some learners as a synonym of \enquote{broad knowledge}. In P2, the metaphorical phrase \enquote{have time} is prevalent. It is thematically triggered by the phrase \enquote{enjoy life}, which stimulates people to write about time as a (precious) possession that allows you to enjoy life. The metaphorical expression of \enquote{spending time} is evoked by the same conceptual metaphor. The \textsc{life is a journey} metaphor triggered by P2 is instantiated in the recurrent expression of stages in life. The mention of \enquote{time} in P3 evokes the same \textsc{time is a precious possession} conceptual metaphor as in P2. Again, the by far most recurrent MRW are the verbs \emph{give, have}, and \emph{spend} that objectify time in that metaphor. In addition, the use of the verb \emph{support} as in \enquote{support communities} is directly related to the prompt (\enquote{\ldots to helping their communities}) as are the metaphorical collocations \enquote{free time} and \enquote{dedicate time}. 
 
-In all the other prompts, trigger effects do not occur or are not as quantitatively relevant as in P1 to P3. P4, for example, does not show any spikes in metaphor frequencies with the most frequent MRW (\emph{image}) merely occurring 5 times. The same is true in P5 with the terms \emph{ruining, reach, comfortable}, and \emph{advancement} being mentioned 4 times each as the most frequent MRWs. A weak effect can be observed in P6 where the prompt \enquote{The best way to travel is in a group led by a tour guide} triggers the metaphorical collocation to \enquote{take a trip} that recurs 14 times across the learner texts. In P7 and P8, the most frequent MRW are not stimulated by the prompt, and there are similarly low token frequencies leading to a flat frequency distribution among the MRW. Incidentally, P8 (\enquote{Successful people try new things and take risks rather than only doing what they already know how to do well}) contains the metaphorical expression \enquote{take risks} that recurs in the learner essays 43 times. However, it has not been manually annotated as an MRW.
+In all the other prompts, trigger effects do not occur or are not as quantitatively relevant as in P1 to P3. P4, for example, does not show any spikes in metaphor frequencies with the most frequent MRW (\emph{image}) merely occurring 5 times. The same is true in P5 with the terms \emph{ruining, reach, comfortable}, and \emph{advancement} being mentioned 4 times each as the most frequent MRW. A weak effect can be observed in P6 where the prompt \enquote{The best way to travel is in a group led by a tour guide} triggers the metaphorical collocation to \enquote{take a trip} that recurs 14 times across the learner texts. In P7 and P8, the most frequent MRW are not stimulated by the prompt, and there are similarly low token frequencies leading to a flat frequency distribution among the MRW. Incidentally, P8 (\enquote{Successful people try new things and take risks rather than only doing what they already know how to do well}) contains the metaphorical expression \enquote{take risks} that recurs in the learner essays 43 times. However, it has not been manually annotated as an MRW in the ETS Corpus.
 
 If we take a look at how the MRW are distributed across the different parts of speech, it is interesting to note that verbs are by far more often marked as metaphors than nouns and adjectives/adverbs. Among the 30 most frequent MRW per prompt in the training set, 416 metaphorical verbs precede over 198 adjectives/adverbs and 141 nouns.
 
 Finally, the learner data poses another peculiarity that is worth considering in the automatic metaphor identification. There is a total of 99 misspelled MRW across all prompts in the data (4.6\% of all MRW) as in \emph{messege, actractivity, strenght, knowled, isolte, dangerousness}, and \emph{broadn} to randomly pick out a few. Finding a way to factor in the out-of-vocabulary words will increase the performance of automatic metaphor detection. 
 
-  
+
 \section{Design and implementation}
 
-Our approach extends the system from Stemle and Onysko (2018), which combines a small set of established machine learning (ML) methods and tools. In particular, the system uses fastText\footnote{\url{https://fasttext.cc/}} word embeddings from different corpora in a bi-directional recursive neural network architecture with long-term short-term memory (LSTM BiRNN) and implements a flat sequence-to-sequence neural network with one hidden layer using TensorFlow and Keras\footnote{\url{https://www.tensorflow.org/guide/keras}} in Python.
-The experimental design uses word embeddings from corpora such as Wikipedia\footnote{https://fasttext.cc/docs/en/english-vectors.html} and BNC\footnote{https://embeddings.sketchengine.co.uk/static/index.html} as well as from texts of language learners (TOEFL11, Blanchard et al. 2013). This is to follow the intuition that the use of metaphors can vary depending on the competence of the learners and that these differences can be helpful in training a metaphor detection system.
+Our approach extends the system from \citet{stemle-onysko:2018:naacl-flpst}, which combines a small set of established machine learning (ML) methods and tools. In particular, the system uses fastText\footnote{\url{https://fasttext.cc/}} word embeddings from different corpora in a bi-directional recursive neural network architecture with long-term short-term memory (LSTM BiRNN) and implements a flat sequence-to-sequence neural network with one hidden layer using TensorFlow+Keras \citep{tensorflow2015-whitepaper} in Python. 
+With the goals we introduced in Section 1, it seemed sufficient to use a successful system from the last ST instead of improving the overall system by integrating the latest, highly successful\footnote{The current development of increasing the complexity in neural network architectures by adding more processing layers in systems comes with the trade-off of loosing insights into the mechanisms of how the improvements are achieved.~See~also~\citet{mikolov:2020:ComplexitySimplicityMachine-talk}.} developments from the field of NLP (see, e.g., \citealp{wang-EtAl:2020:StaticDynamicWord} for an overview).
 
-For the current ST, the system was slightly extended: 
-\begin{enumerate}
-\item bump requirements of used tools to current versions, in particular: TensorFlow  + Keras, gensim\footnote{\url{https://radimrehurek.com/gensim/}}, FastText, and scikit-learn\footnote{\url{https://scikit-learn.org/}}
-\item deal with the new format of the TOEFL data
-\item make better use of sub-word information encoded in FastText word representations
-\item add option to integrate metadata into the input representations for the neural network
-\end{enumerate}
+In their experimental design \citet{stemle-onysko:2018:naacl-flpst} use word embeddings from corpora such as Wikipedia\footnote{\url{https://fasttext.cc/docs/en/english-vectors.html}} and BNC\footnote{\url{https://embeddings.sketchengine.co.uk/static/index.html}} as well as from texts of language learners (TOEFL11). This is to follow the intuition that the use of metaphors can vary depending on the competence of the learners and that these differences can be helpful in training a metaphor detection system.
 
+For the current ST, the system was slightly extended. We
+\begin{itemize}
+\item bumped the requirements of the used tools to current versions (in particular for TensorFlow+Keras, gensim\footnote{\url{https://radimrehurek.com/gensim/}}, FastText, and scikit-learn\footnote{\url{https://scikit-learn.org/}}),
+\item adapted the system to the new format of the TOEFL data set,
+\item improved the use of sub-word information encoded in FastText word representations 
+(we fixed a bug that prevented the system to use proper subword character n-gram representations in some cases), and
+\item added an option to integrate metadata into the input representations for the neural network.
+\end{itemize}
+
+For the last point, we adapted the way the input for the neural network is represented: 
+The number of input layers corresponds to the number of features, i.e.~for multiple features, e.g.~multiple WE models or additional PoS tags, sequences are concatenated on the word level such that the number of features for an individual word grows.
+For the metadata, we added an input layer with the number of dimensions varying with the number of encoded metadata.
+
+We maintain the implementation in a source code repository\footnote{\url{https://github.com/bot-zen/}}.
+The system is available under the APLv2 open-source license.
 
 \section{Experiments}
 
 \subsection{Combining VUA and TOEFL}
-In a first experiment, we tried to extend the training data and combine the two datasets. 
-Given the discussion in Section 2, we expected confounding effects due to the fact that the manual classification of All-POS metaphors is different in these two sets. 
+In our first experiment, we tried to extend the training data and combine the two available datasets. 
+Given the discussion in Section 2, we expected confounding effects due to the fact that the manual classification of the All-POS- and Verb-metaphors are different in these two sets. 
 
+First, we shuffled both datasets individually and then combined them in three ways: A re-shuffled combination of the two sets and two combinations where we put one set at the beginning and the other one at the end. For the evaluation we emulated a 10-fold CV, with training on combinations of the original datasets and testing on a held out part of one of the datasets: We trained on one of our combined sets and tested on one of 10 parts of the uncombined dataset, which had been held out from the training, and repeated this for all 10 parts.
 As word embeddings, we used BNC and the complete TOEFL11 data.
-The input data was constructed for both tasks (AllPOS and Verbs) by concatenating the test sets in both permutations. That is, first the TOEFL test set and then the VUA test set, and vice versa.
-Testing was done by 10-fold cross-validation, which only approximates the proper sequence testing of input data, but we believe this will provide us with some valuable information.
 
-Table \ref{tab:sequence_learning} shows that, most notably, the highest recall is achieved on the Verbs task when using first the TOEFL data and subsequently the VUA data. We interpret that in a way that the learning of the TOEFL data is mostly 'forgotten' by the neural network, but its focus on verb-metaphors leaves a strong initialization bias towards verbs. 
+Table \ref{tab:sequence_learning} shows that, most notably, the highest recall is achieved on the Verbs task when using first the VUA data and subsequently the TOEFL data, and testing on the TOEFL data. We interpret that in a way that the learning of the VUA data is mostly 'forgotten' by the neural network, but its focus on Verb-metaphors leaves a strong initialization bias towards verbs. 
 
-Overall, the results of the various runs show how different the two datasets are and, conversely, how much could be gained from homogeneously annotated data. 
+Overall, the results of the various runs show that the much larger VUA data dominates the learnt properties of the model, and that the matching focus on Verb-metaphors in both datasets improves recall.  
 
-Finally, we hope to be able to evaluate this experiment on the held-out test set from the organizers.
-
-% \begin{table*}[t]
-% \begin{center}
-% \begin{tabular}{lll|l|l||l|l|}
-% \cline{4-7}
-% \multicolumn{3}{l}{}                                          &  \multicolumn{4}{|c|}{Task}  \\ 
-% \cline{1-2} \cline{4-7} 
-% \multicolumn{2}{|c|}{Training}  &  & \multicolumn{2}{|c||}{Verbs} & \multicolumn{2}{c|}{AllPOS} \\ 
-% \hline 
-% \multicolumn{2}{|c|}{In order 1:VUA 2:TOEFL} &    & VUA          & TOEFL         & VUA               & TOEFL       \\ \hline \hline
-% \multicolumn{2}{|l|}{}      & Pr    & 0.48 (+/- 0.10) & 0.48 (+/- 0.08) & 0.47 (+/- 0.10)   & 0.47 (+/- 0.11) \\ \cline{3-7} 
-% \multicolumn{2}{|l|}{}      & Re    & 0.49 (+/- 0.15) & 0.49 (+/- 0.14) & 0.41 (+/- 0.10)   & 0.41 (+/- 0.11) \\ \cline{3-7} 
-% \multicolumn{2}{|l|}{}      & F1    & 0.48            & 0.48            & 0.44              & 0.44            \\ \hline \hline
-% \multicolumn{2}{|c|}{In order 1:TOEFL 2:VUA} &  \multicolumn{5}{l}{}  \\ \hline \hline 
-% \multicolumn{2}{|l|}{}      & Pr    &  0.39 (+/- 0.15) & 0.40 (+/- 0.15) & 0.32 (+/- 0.11) & 0.39 (+/- 0.23) \\ \cline{3-7}
-% \multicolumn{2}{|l|}{}      & Re    &  0.79 (+/- 0.04) & 0.77 (+/- 0.05) & 0.71 (+/- 0.24) & 0.71 (+/- 0.24) \\ \cline{3-7} 
-% \multicolumn{2}{|l|}{}      & F1    &  0.52            & 0.53            & 0.44            & 0.50            \\ \hline
-% \multicolumn{2}{|c|}{Shuffled: TOEFL + VUA} &  \multicolumn{5}{l}{}  \\ \hline \hline 
-% \multicolumn{2}{|l|}{}      & Pr    & 0.51 (+/- 0.02)  & 0.53 (+/- 0.03) & 0.52 (+/- 0.04) & 0.51 (+/- 0.03) \\ \cline{3-7}
-% \multicolumn{2}{|l|}{}      & Re    & 0.69 (+/- 0.02)  & 0.67 (+/- 0.06) & 0.66 (+/- 0.06) & 0.67 (+/- 0.04) \\ \cline{3-7} 
-% \multicolumn{2}{|l|}{}      & F1    & 0.59             & 0.59            & 0.58            & 0.58            \\ \hline
-% \end{tabular}
-% \end{center}
-% \caption{\label{tab:sequence_learning}10-fold CV comparison of training on (un)shuffled VUA and TOEFL data for the Verb and AllPOS Task.}
-% \end{table*}
-
-
-\begin{table}[]
-\setlength{\tabcolsep}{4.5pt}
-\begin{tabular}{|l|l|l|l|l|}
+\begin{table*}[tb!]
+\begin{center}
+\begin{tabular}{lll||l|l||l|l|}
+\hline 
+\multicolumn{2}{|c|}{}  &  & \multicolumn{2}{|c||}{Test on VUA} & \multicolumn{2}{c|}{Test on TOEFL} \\  
+\hline 
+\multicolumn{2}{|c|}{Training} &    & Verbs   & All-POS       & Verbs      & All-POS    \\ \hline \hline
+%
+\multicolumn{2}{|c|}{Shuffled}      & Pr    & \textbf{0.58 (+/- 0.03)}  & 0.55 (+/- 0.04) & 0.46 (+/- 0.09) & 0.42 (+/- 0.04) \\ \cline{3-7}
+\multicolumn{2}{|c|}{VUA + TOEFL}   & Re    & 0.65 (+/- 0.03)  & 0.64 (+/- 0.05) & 0.69 (+/- 0.07) & 0.67 (+/- 0.07) \\ \cline{3-7} 
+\multicolumn{2}{|l|}{}              & F1    & \textbf{0.61 (+/- 0.02)}  & 0.59 (+/- 0.02) & 0.54 (+/- 0.06) & 0.52 (+/- 0.03) \\ 
+\hline  \hline
+%
+\multicolumn{2}{|c|}{Sequential}    & Pr    & 0.56 (+/- 0.05) & 0.55 (+/- 0.06)  & 0.43 (+/- 0.06) & 0.44 (+/- 0.04) \\ \cline{3-7} 
+\multicolumn{2}{|c|}{1:VUA 2:TOEFL} & Re    & 0.67 (+/- 0.06) & 0.64 (+/- 0.09)  & \textbf{0.71 (+/- 0.07)} & 0.68 (+/- 0.04) \\ \cline{3-7} 
+\multicolumn{2}{|l|}{}              & F1    & 0.60 (+/- 0.03) & 0.58 (+/- 0.03)  & 0.53 (+/- 0.04) & 0.53 (+/- 0.03) \\ 
+\hline \hline
+%
+\multicolumn{2}{|c|}{Sequential}    & Pr    &  0.56 (+/- 0.04) & 0.53 (+/- 0.06) & 0.46 (+/- 0.06) & 0.42 (+/- 0.05) \\ \cline{3-7}
+\multicolumn{2}{|c|}{1:TOEFL 2:VUA} & Re    &  0.68 (+/- 0.04) & 0.67 (+/- 0.08) & 0.69 (+/- 0.08) & 0.70 (+/- 0.06) \\ \cline{3-7} 
+\multicolumn{2}{|l|}{}              & F1    &  0.61 (+/- 0.03) & 0.59 (+/- 0.02) & 0.55 (+/- 0.05) & 0.52 (+/- 0.04) \\ 
 \hline
-\multicolumn{2}{|c|}{Training}               &    & \multicolumn{2}{c|}{Task}         \\ \hline \hline 
-\multicolumn{2}{|c|}{\shortstack[l]{In order \\ 1:VUA \\ 2:TOEFL}} &    & Verbs           & AllPOS             \\ \hline
-\multicolumn{2}{|l|}{}                       & Pr & 0.48 (+/- 0.10) & 0.47 (+/- 0.11) \\ \cline{3-5} 
-\multicolumn{2}{|l|}{}                       & Re & 0.49 (+/- 0.15) & 0.41 (+/- 0.11) \\ \cline{3-5} 
-\multicolumn{2}{|l|}{}                       & F1 & 0.48            & 0.44            \\ \hline \hline
-\multicolumn{2}{|c|}{\shortstack[l]{In order \\ 1:TOEFL \\ 2:VUA}} & \multicolumn{3}{l}{}  \\ \hline
-\multicolumn{2}{|l|}{}                       & Pr & 0.39 (+/- 0.15) & 0.39 (+/- 0.23) \\ \cline{3-5} 
-\multicolumn{2}{|l|}{}                       & Re & 0.79 (+/- 0.04) & 0.71 (+/- 0.24) \\ \cline{3-5} 
-\multicolumn{2}{|l|}{}                       & F1 & 0.52            & 0.50            \\ \hline \hline
-\multicolumn{2}{|c|}{\shortstack[l]{Shuffled \\ VUA \\ + \\ TOEFL}}  &  \multicolumn{3}{l}{}   \\ \hline
-\multicolumn{2}{|l|}{}                       & Pr & 0.51 (+/- 0.02) & 0.51 (+/- 0.03) \\ \cline{3-5} 
-\multicolumn{2}{|l|}{}                       & Re & 0.69 (+/- 0.02) & 0.67 (+/- 0.04) \\ \cline{3-5} 
-\multicolumn{2}{|l|}{}                       & F1 & 0.59            & 0.58            \\ \hline
+\hline
+\hline
+%
+\multicolumn{2}{|c|}{Baseline:}      & Pr    &  0.55 (+/- 0.04) & 0.55 (+/- 0.03) & 0.57 (+/- 0.07) & 0.53 (+/- 0.06) \\ \cline{3-7}
+\multicolumn{2}{|c|}{VUA and TOEFL} & Re    &  0.69 (+/- 0.04) & 0.68 (+/- 0.04) & 0.63 (+/- 0.08) & 0.68 (+/- 0.06) \\ \cline{3-7} 
+\multicolumn{2}{|c|}{individually}  & F1    &  0.61 (+/- 0.01) & 0.61 (+/- 0.01) & 0.59 (+/- 0.03) & 0.59 (+/- 0.03) \\ 
+\hline
 \end{tabular}
-\caption{\label{tab:sequence_learning}10-fold CV comparison of training on (un)shuffled VUA and TOEFL data for the Verb and AllPOS Task.}
-\end{table}
+\end{center}
+\caption{\label{tab:sequence_learning}10-fold CV comparison of training on (un)shuffled VUA and TOEFL data for the Verbs and All-POS Tasks.}
+\end{table*}
+
+%%%
+% shuffled verb on vuamc
+% 0.58 (+/- 0.03) 0.65 (+/- 0.03) 0.61 (+/- 0.02)
+% shuffled all_pos on vuamc
+% 0.55 (+/- 0.04) 0.64 (+/- 0.05) 0.59 (+/- 0.02)
+% shuffled verb on toefl
+% 0.46 (+/- 0.09) 0.69 (+/- 0.07) 0.54 (+/- 0.06)
+% shuffled all_pos on toefl
+% 0.42 (+/- 0.04) 0.67 (+/- 0.07) 0.52 (+/- 0.03)
+%%%
+% vuamc-toefl verb on vuamc
+% 0.56 (+/- 0.05) 0.67 (+/- 0.06) 0.60 (+/- 0.03)
+% vuamc-toefl all_pos on vuamc
+% 0.55 (+/- 0.06) 0.64 (+/- 0.09) 0.58 (+/- 0.03)
+% vuamc-toefl verb on toefl
+% 0.43 (+/- 0.06) 0.71 (+/- 0.07) 0.53 (+/- 0.04)
+% vuamc-toefl all_pos on toefl
+% 0.44 (+/- 0.04) 0.68 (+/- 0.04) 0.53 (+/- 0.03)
+%%%
+% toefl-vuamc verb on vuamc
+% 0.56 (+/- 0.04) 0.68 (+/- 0.04) 0.61 (+/- 0.03)
+% toefl-vuamc all_pos on vuamc
+% 0.53 (+/- 0.06) 0.67 (+/- 0.08) 0.59 (+/- 0.02)
+% toefl-vuamc verb on toefl
+% 0.46 (+/- 0.06) 0.69 (+/- 0.08) 0.55 (+/- 0.05)
+% toefl-vuamc all_pos on toefl
+% 0.42 (+/- 0.05) 0.70 (+/- 0.06) 0.52 (+/- 0.04)
+%%%
+% vuamc-shuff_on_vuamc-verb.eval
+% 0.55 (+/- 0.04) 0.69 (+/- 0.04) 0.61 (+/- 0.01)
+% vuamc-shuff_on_vuamc-all_pos.eval
+% 0.55 (+/- 0.03) 0.68 (+/- 0.04) 0.61 (+/- 0.01)
+% toefl-shuff_on_toefl-verb.eval
+% 0.57 (+/- 0.07) 0.63 (+/- 0.08) 0.59 (+/- 0.03)
+% toefl-shuff_on_toefl-all_pos.eval
+% 0.53 (+/- 0.06) 0.68 (+/- 0.06) 0.59 (+/- 0.03)
+
+% \begin{table}[htb!]
+% \setlength{\tabcolsep}{4.5pt}
+% \begin{tabular}{|l|l|l|l|l|}
+% \hline
+% \multicolumn{2}{|c|}{Training}               &    & \multicolumn{2}{c|}{Task}         \\ \hline \hline 
+% \multicolumn{2}{|c|}{\shortstack[l]{In order \\ 1:VUA \\ 2:TOEFL}} &    & Verbs           & All-POS             \\ \hline
+% \multicolumn{2}{|l|}{}                       & Pr & 0.48 (+/- 0.10) & 0.47 (+/- 0.11) \\ \cline{3-5} 
+% \multicolumn{2}{|l|}{}                       & Re & 0.49 (+/- 0.15) & 0.41 (+/- 0.11) \\ \cline{3-5} 
+% \multicolumn{2}{|l|}{}                       & F1 & 0.48            & 0.44            \\ \hline \hline
+% \multicolumn{2}{|c|}{\shortstack[l]{In order \\ 1:TOEFL \\ 2:VUA}} & \multicolumn{3}{l|}{}  \\ \hline
+% \multicolumn{2}{|l|}{}                       & Pr & 0.39 (+/- 0.15) & 0.39 (+/- 0.23) \\ \cline{3-5} 
+% \multicolumn{2}{|l|}{}                       & Re & 0.79 (+/- 0.04) & 0.71 (+/- 0.24) \\ \cline{3-5} 
+% \multicolumn{2}{|l|}{}                       & F1 & 0.52            & 0.50            \\ \hline \hline
+% \multicolumn{2}{|c|}{\shortstack[l]{Shuffled \\ VUA \\ + \\ TOEFL}}  &  \multicolumn{3}{l|}{}   \\ \hline
+% \multicolumn{2}{|l|}{}                       & Pr & 0.51 (+/- 0.02) & 0.51 (+/- 0.03) \\ \cline{3-5} 
+% \multicolumn{2}{|l|}{}                       & Re & 0.69 (+/- 0.02) & 0.67 (+/- 0.04) \\ \cline{3-5} 
+% \multicolumn{2}{|l|}{}                       & F1 & 0.59            & 0.58            \\ \hline
+% \end{tabular}
+% \caption{\label{tab:sequence_learning}10-fold CV comparison of training on (un)shuffled VUA and TOEFL data for the Verb and All-POS Task.}
+% \end{table}
 
 % vuamc-toefl_on_vuamc-verb.eval            accuracy                                  0.97 (+/- 0.01)
 % vuamc-toefl_on_vuamc-verb.eval            precision                                 0.48 (+/- 0.10)
@@ -456,118 +589,95 @@ The available metadata are the following:
 Given the discussion in Section 2, we expected confounding effects for some of the metadata, and we hoped to improve the results when factoring in the metadata that showed significant effects on the number and use of metaphors.
 
 As word embeddings, we used only the BNC.
-The input data was constructed for both tasks (AllPOS and Verbs) by adding the metadata information for every single word in the input sequence. 
+The input data was constructed for both tasks (All-POS and Verbs) by adding the metadata information for every single word in the input sequence. 
 Testing was done by 10-fold cross-validation.
 
 Table \ref{tab:metadata} shows that, most notably, the overall metadata does \emph{not} improve the results in a systematic, meaningful way.
 Also, some metadata, like the \emph{Text ID} even considerably degrades performance. Overall, there is no clear tendency towards metadata being more -- if at all - helpful.  
 
-In addition, we evaluated some combinations on the organizers' held-out test (via CodaLab) and found that the Verb task - contrary to our 10-fold CV - gained slightly from the use of metadata. We hope to be able to evaluate this experiment on the held-out test set from the organizers. Alternatively, we could split the available dataset and re-run the experiments with this data.
-
+The complete held-out test set was not available at the time of writing, but we had evaluated some combinations of metadata during the shared task (via CodaLab) and found that the Verbs task - contrary to our 10-fold CV - gained slightly from the use of metadata. An evaluation on the complete test set would have been preferable. Additionally, representing the metadata at the level of the entire sequence instead of for each word individually could also noticeably influence the results.
 
 % Please add the following required packages to your document preamble:
 % \usepackage{multirow}
-\begin{table}[]
+\begin{table}[htb!]
 \setlength{\tabcolsep}{2.5pt}
 \begin{center}
 \begin{tabular}{|l|l|l|l|}
 \hline
-                                                                                   &    & Verbs           & AllPOS          \\ \hline
-\multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}Baseline\\ (no metadt.)\end{tabular}}  & Pr & 0.53 (+/- 0.05) & 0.53 (+/- 0.04) \\ \cline{2-4} 
-                                                                                   & Re & 0.64 (+/- 0.07) & 0.63 (+/- 0.05) \\ \hline
-\multirow{2}{*}{Prompt}                                                            & Pr & 0.50 (+/- 0.06) & 0.51 (+/- 0.05) \\ \cline{2-4} 
-                                                                                   & Re & 0.66 (+/- 0.10) & 0.64 (+/- 0.05) \\ \hline
-\multirow{2}{*}{Proficiency}                                                       & Pr & 0.51 (+/- 0.07) & 0.51 (+/- 0.05) \\ \cline{2-4} 
-                                                                                   & Re & 0.68 (+/- 0.09) & 0.65 (+/- 0.07) \\ \hline
-\multirow{2}{*}{L1}                                                                & Pr & 0.49 (+/- 0.05) & 0.53 (+/- 0.06) \\ \cline{2-4} 
-                                                                                   & Re & 0.68 (+/- 0.08) & 0.60 (+/- 0.06) \\ \hline
-\multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}Prom.+  \\ Prof. + L1\end{tabular}} & Pr & 0.54 (+/- 0.07) & 0.52 (+/- 0.06) \\ \cline{2-4} 
-                                                                                   & Re & 0.62 (+/- 0.07) & 0.64 (+/- 0.06) \\ \hline
-\multirow{2}{*}{Text ID}                                                           & Pr & 0.42 (+/- 0.08) & 0.48 (+/- 0.08) \\ \cline{2-4} 
-                                                                                   & Re & 0.72 (+/- 0.09) & 0.60 (+/- 0.10) \\ \hline
-\multirow{2}{*}{Text length}                                                       & Pr & 0.50 (+/- 0.06) & 0.53 (+/- 0.06) \\ \cline{2-4} 
-                                                                                   & Re & 0.66 (+/- 0.11) & 0.62 (+/- 0.05) \\ \hline
-\multirow{2}{*}{All}                                                               & Pr & 0.45 (+/- 0.08) & 0.44 (+/- 0.08) \\ \cline{2-4} 
-                                                                                   & Re & 0.68 (+/- 0.08) & 0.64 (+/- 0.08) \\ \hline
+                                                                                   &    & Verbs           & All-POS          \\ \hline
+\multirow{3}{*}{\begin{tabular}[c]{@{}l@{}}Baseline\\ (no metadt.)\end{tabular}}   & Pr & 0.53 (+/- 0.04) & 0.53 (+/- 0.04) \\ \cline{2-4} 
+                                                                                   & Re & 0.64 (+/- 0.07) & 0.63 (+/- 0.05) \\ \cline{2-4}
+                                                                                   & F1 & 0.57 (+/- 0.02) & 0.57 (+/- 0.03) \\ \hline
+\multirow{3}{*}{Prompt}                                                            & Pr & 0.50 (+/- 0.06) & 0.51 (+/- 0.05) \\ \cline{2-4} 
+                                                                                   & Re & 0.66 (+/- 0.10) & 0.64 (+/- 0.05) \\ \cline{2-4}
+                                                                                   & F1 & 0.56 (+/- 0.02) & 0.56 (+/- 0.03) \\ \hline
+\multirow{3}{*}{Proficiency}                                                       & Pr & 0.51 (+/- 0.07) & 0.51 (+/- 0.05) \\ \cline{2-4} 
+                                                                                   & Re & 0.68 (+/- 0.09) & 0.65 (+/- 0.07) \\ \cline{2-4}
+                                                                                   & F1 & 0.57 (+/- 0.02) & 0.57 (+/- 0.04) \\ \hline
+\multirow{3}{*}{L1}                                                                & Pr & 0.49 (+/- 0.05) & 0.53 (+/- 0.06) \\ \cline{2-4} 
+                                                                                   & Re & 0.68 (+/- 0.08) & 0.60 (+/- 0.06) \\ \cline{2-4}
+                                                                                   & F1 & 0.57 (+/- 0.02) & 0.56 (+/- 0.03) \\ \hline
+\multirow{3}{*}{\begin{tabular}[c]{@{}l@{}}Prom.+  \\ Prof. + L1\end{tabular}}     & Pr & 0.54 (+/- 0.07) & 0.52 (+/- 0.06) \\ \cline{2-4} 
+                                                                                   & Re & 0.62 (+/- 0.07) & 0.64 (+/- 0.05) \\ \cline{2-4}
+                                                                                   & F1 & 0.57 (+/- 0.03) & 0.57 (+/- 0.03) \\ \hline
+\multirow{3}{*}{Text ID}                                                           & Pr & 0.42 (+/- 0.08) & 0.48 (+/- 0.08) \\ \cline{2-4} 
+                                                                                   & Re & 0.72 (+/- 0.08) & 0.60 (+/- 0.10) \\ \cline{2-4}
+                                                                                   & F1 & 0.52 (+/- 0.05) & 0.52 (+/- 0.03) \\ \hline
+\multirow{3}{*}{Text length}                                                       & Pr & 0.50 (+/- 0.06) & 0.53 (+/- 0.05) \\ \cline{2-4} 
+                                                                                   & Re & 0.66 (+/- 0.11) & 0.62 (+/- 0.05) \\ \cline{2-4}
+                                                                                   & F1 & 0.56 (+/- 0.03) & 0.57 (+/- 0.03) \\ \hline
+\multirow{3}{*}{All}                                                               & Pr & 0.45 (+/- 0.07) & 0.44 (+/- 0.08) \\ \cline{2-4} 
+                                                                                   & Re & 0.68 (+/- 0.08) & 0.64 (+/- 0.08) \\ \cline{2-4}
+                                                                                   & F1 & 0.54 (+/- 0.04) & 0.51 (+/- 0.04) \\ \hline
 \end{tabular}
 \end{center}
-\caption{\label{tab:metadata}10-fold CV comparison of training on different metadata.}
+\caption{\label{tab:metadata}10-fold CV comparison of training with different metadata on the TOEFL dataset.}
 \end{table}
 
-% toefl-all_pos-bnc.eval                    accuracy                                  0.97 (+/- 0.00)
-% toefl-all_pos-bnc.eval                    precision                                 0.53 (+/- 0.04)
-% toefl-all_pos-bnc.eval                    recall                                    0.63 (+/- 0.05)
-
-% toefl-all_pos-bnc-meta_cat_prom.eval      accuracy                                  0.97 (+/- 0.00)
-% toefl-all_pos-bnc-meta_cat_prom.eval      precision                                 0.51 (+/- 0.05)
-% toefl-all_pos-bnc-meta_cat_prom.eval      recall                                    0.64 (+/- 0.05)
-
-% toefl-all_pos-bnc-meta_cat_prof.eval      accuracy                                  0.97 (+/- 0.00)
-% toefl-all_pos-bnc-meta_cat_prof.eval      precision                                 0.51 (+/- 0.05)
-% toefl-all_pos-bnc-meta_cat_prof.eval      recall                                    0.65 (+/- 0.07)
-
-% toefl-all_pos-bnc-meta_cat_l1.eval        accuracy                                  0.97 (+/- 0.00)
-% toefl-all_pos-bnc-meta_cat_l1.eval        precision                                 0.53 (+/- 0.06)
-% toefl-all_pos-bnc-meta_cat_l1.eval        recall                                    0.60 (+/- 0.06)
-
-% toefl-all_pos-bnc-meta_cats.eval          accuracy                                  0.97 (+/- 0.00)
-% toefl-all_pos-bnc-meta_cats.eval          precision                                 0.52 (+/- 0.06)
-% toefl-all_pos-bnc-meta_cats.eval          recall                                    0.64 (+/- 0.06)
-
-% toefl-all_pos-bnc-meta_ids.eval           accuracy                                  0.97 (+/- 0.01)
-% toefl-all_pos-bnc-meta_ids.eval           precision                                 0.48 (+/- 0.08)
-% toefl-all_pos-bnc-meta_ids.eval           recall                                    0.60 (+/- 0.10)
-
-% toefl-all_pos-bnc-meta_len.eval           accuracy                                  0.97 (+/- 0.00)
-% toefl-all_pos-bnc-meta_len.eval           precision                                 0.53 (+/- 0.06)
-% toefl-all_pos-bnc-meta_len.eval           recall                                    0.62 (+/- 0.05)
-
-% toefl-all_pos-bnc-meta_all.eval           accuracy                                  0.96 (+/- 0.01)
-% toefl-all_pos-bnc-meta_all.eval           precision                                 0.44 (+/- 0.08)
-% toefl-all_pos-bnc-meta_all.eval           recall                                    0.64 (+/- 0.08)
-
-
-% toefl-verb-bnc.eval                       accuracy                                  0.99 (+/- 0.00)
-% toefl-verb-bnc.eval                       precision                                 0.53 (+/- 0.05)
-% toefl-verb-bnc.eval                       recall                                    0.64 (+/- 0.07)
-
-% toefl-verb-bnc-meta_cat_prom.eval         accuracy                                  0.98 (+/- 0.00)
-% toefl-verb-bnc-meta_cat_prom.eval         precision                                 0.50 (+/- 0.06)
-% toefl-verb-bnc-meta_cat_prom.eval         recall                                    0.66 (+/- 0.10)
-
-% toefl-verb-bnc-meta_cat_prof.eval         accuracy                                  0.99 (+/- 0.00)
-% toefl-verb-bnc-meta_cat_prof.eval         precision                                 0.51 (+/- 0.07)
-% toefl-verb-bnc-meta_cat_prof.eval         recall                                    0.68 (+/- 0.09)
-
-% toefl-verb-bnc-meta_cat_l1.eval           accuracy                                  0.98 (+/- 0.00)
-% toefl-verb-bnc-meta_cat_l1.eval           precision                                 0.49 (+/- 0.05)
-% toefl-verb-bnc-meta_cat_l1.eval           recall                                    0.68 (+/- 0.08)
-
-% toefl-verb-bnc-meta_cats.eval             accuracy                                  0.99 (+/- 0.00)
-% toefl-verb-bnc-meta_cats.eval             precision                                 0.54 (+/- 0.07)
-% toefl-verb-bnc-meta_cats.eval             recall                                    0.62 (+/- 0.07)
-
-% toefl-verb-bnc-meta_ids.eval              accuracy                                  0.98 (+/- 0.00)
-% toefl-verb-bnc-meta_ids.eval              precision                                 0.42 (+/- 0.08)
-% toefl-verb-bnc-meta_ids.eval              recall                                    0.72 (+/- 0.09)
-
-% toefl-verb-bnc-meta_len.eval              accuracy                                  0.98 (+/- 0.00)
-% toefl-verb-bnc-meta_len.eval              precision                                 0.50 (+/- 0.06)
-% toefl-verb-bnc-meta_len.eval              recall                                    0.66 (+/- 0.11)
-
-% toefl-verb-bnc-meta_all.eval              accuracy                                  0.98 (+/- 0.01)
-% toefl-verb-bnc-meta_all.eval              precision                                 0.45 (+/- 0.08)
-% toefl-verb-bnc-meta_all.eval              recall                                    0.68 (+/- 0.08)
+% for TASK in verb all_pos; do for DATA in toefl-$TASK-bnc.eval toefl-$TASK-bnc-meta_cat_prom.eval toefl-$TASK-bnc-meta_cat_prof.eva
+% l toefl-$TASK-bnc-meta_cat_l1.eval toefl-$TASK-bnc-meta_cats.eval toefl-$TASK-bnc-meta_ids.eval toefl-$TASK-bnc-meta_len.eval toefl-$TASK-bnc-meta_all.eval  ; do echo $TASK $DATA;
+%  cat experiments/2020/20200422_meta/$DATA | grep -vE "/" | grep loss | cut -f7-8 | sed -e 's/[a-z]\+://g' | awk -v OFS='\t' '{print $1,$2,((2*$1*$2)/($1+$2))}' | ./metaeval.py ; done; done
+% verb toefl-verb-bnc.eval
+% 0.53 (+/- 0.04) 0.64 (+/- 0.07) 0.57 (+/- 0.02)
+% verb toefl-verb-bnc-meta_cat_prom.eval
+% 0.50 (+/- 0.06) 0.66 (+/- 0.10) 0.56 (+/- 0.02)
+% verb toefl-verb-bnc-meta_cat_prof.eval
+% 0.51 (+/- 0.07) 0.68 (+/- 0.09) 0.57 (+/- 0.02)
+% verb toefl-verb-bnc-meta_cat_l1.eval
+% 0.49 (+/- 0.05) 0.68 (+/- 0.08) 0.57 (+/- 0.02)
+% verb toefl-verb-bnc-meta_cats.eval
+% 0.54 (+/- 0.07) 0.62 (+/- 0.07) 0.57 (+/- 0.03)
+% verb toefl-verb-bnc-meta_ids.eval
+% 0.42 (+/- 0.08) 0.72 (+/- 0.08) 0.52 (+/- 0.05)
+% verb toefl-verb-bnc-meta_len.eval
+% 0.50 (+/- 0.06) 0.66 (+/- 0.11) 0.56 (+/- 0.03)
+% verb toefl-verb-bnc-meta_all.eval
+% 0.45 (+/- 0.07) 0.68 (+/- 0.08) 0.54 (+/- 0.04)
+% all_pos toefl-all_pos-bnc.eval
+% 0.53 (+/- 0.04) 0.63 (+/- 0.05) 0.57 (+/- 0.03)
+% all_pos toefl-all_pos-bnc-meta_cat_prom.eval
+% 0.51 (+/- 0.05) 0.64 (+/- 0.05) 0.56 (+/- 0.03)
+% all_pos toefl-all_pos-bnc-meta_cat_prof.eval
+% 0.51 (+/- 0.05) 0.65 (+/- 0.07) 0.57 (+/- 0.04)
+% all_pos toefl-all_pos-bnc-meta_cat_l1.eval
+% 0.53 (+/- 0.06) 0.60 (+/- 0.06) 0.56 (+/- 0.03)
+% all_pos toefl-all_pos-bnc-meta_cats.eval
+% 0.52 (+/- 0.06) 0.64 (+/- 0.05) 0.57 (+/- 0.03)
+% all_pos toefl-all_pos-bnc-meta_ids.eval
+% 0.48 (+/- 0.08) 0.60 (+/- 0.10) 0.52 (+/- 0.03)
+% all_pos toefl-all_pos-bnc-meta_len.eval
+% 0.53 (+/- 0.06) 0.62 (+/- 0.05) 0.57 (+/- 0.03)
+% all_pos toefl-all_pos-bnc-meta_all.eval
+% 0.44 (+/- 0.08) 0.64 (+/- 0.08) 0.51 (+/- 0.04)
 
 
-
-%- Vergleich: BNC vs BNC + NLI
+%- FIXME: Compare BNC vs BNC + NLI
 
 \section{Conclusion}
 
-This paper has focused on the structure of the learner data used in the Second Shared Task of Metaphor Identification. We aimed at exploring possible factors that influence this kind of data and tested whether these play a role for the automated identification using word-embeddings in an LSTM BiRNN architecture. A descriptive investigation of the manually annotated sample of the ETS Corpus of Non-Native Written English (TOEFL11 corpus) shows that the factors of proficiency and especially the essay prompt exhibit significant correlations to the amount and type of metaphors found in the annotated training set. The data also shows a numerical bias towards the annotation of verbs as metaphors compared to other content words.
+This paper has focused on the structure of the learner data used in the Second Shared Task of Metaphor Identification. We aimed at exploring possible factors that influence this kind of data and tested whether these play a role for the automated identification using word embeddings in an established LSTM BiRNN system from the first ST in 2018. A descriptive investigation of the manually annotated sample of the ETS Corpus of Non-Native Written English (TOEFL11 corpus) shows that the factors of proficiency and especially the essay prompt exhibit significant correlations to the amount and type of metaphors found in the annotated training set. The data also show a numerical bias towards the annotation of verbs as metaphors compared to other content words.
 
- A sequential training of the bidirectional neural network using both the VUA and the TOEFL partitions of the shared task points to the different structure of the datasets, in particular towards an emerging bias of overidentifying verbal metaphors in the neural network based classification. The hypothesized influence of the metadata in the TOEFL set, in particular the observed dependencies on proficiency and the essay prompt, was not confirmed by the results of the automated identification. While the factors of L1, proficiency, prompt and essay length did not influence the baseline results, the essay ID (i.e. the individual learner) reduced the performance of the system as did a combination of all metadata. For the future, more tests with different ways of modelling the metadata in the neural network architecture and on the test set of the task will provide further insights.
+ A sequential training of the bidirectional neural network using both the VUA and the TOEFL partitions of the shared task points to the different structure of the datasets, in particular towards an emerging bias of overidentifying verbal metaphors in the neural network based classification. The hypothesized influence of the metadata in the TOEFL set, in particular the observed dependencies on proficiency and the essay prompt, was not confirmed by the results of the automated identification. While the factors of L1, proficiency, prompt and essay length did not influence the baseline results, the essay ID (i.e.~the individual learner) reduced the performance of the system as did a combination of all metadata. For the future, more tests with different ways of modelling the metadata in the neural network architecture and on the test set of the task will provide further insights.
 
 
 \section*{Acknowledgments}
@@ -580,6 +690,7 @@ The computational results presented have been achieved in part using the \href{h
 %\noindent
 %
 %
+%\pagebreak
 \bibliography{anthology,acl2020,egon}
 \bibliographystyle{acl_natbib}
 \end{document}
