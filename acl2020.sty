@@ -453,7 +453,11 @@
 
 % DK/IV: Workaround for annoying hyperref pagewrap bug 
 \RequirePackage{etoolbox}
-\patchcmd\@combinedblfloats{\box\@outputbox}{\unvbox\@outputbox}{}{\errmessage{\noexpand patch failed}}
+% 2020-06 by egon.stemle@eurac.edu
+% Fix: <argument> \errmessage {\noexpand patch failed}
+% https://tex.stackexchange.com/questions/487428/patch-failed-in-emnlp-style-template
+% uncomment the following line
+%\patchcmd\@combinedblfloats{\box\@outputbox}{\unvbox\@outputbox}{}{\errmessage{\noexpand patch failed}}
 
 % bibliography
 
